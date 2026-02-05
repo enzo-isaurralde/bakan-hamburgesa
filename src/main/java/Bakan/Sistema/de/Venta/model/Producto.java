@@ -15,7 +15,7 @@ public class Producto {
     private Long id;
 
     private  String nombre;
-    private  String precio;
+    private  Double precio;
     private  Boolean disponible = true;
 
 }

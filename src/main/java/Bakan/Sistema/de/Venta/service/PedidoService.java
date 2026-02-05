@@ -38,7 +38,7 @@ public class PedidoService {
         clienteRepository.save(cliente);
 
         // 2. Buscar productos por IDs
-        List<Producto> productos = productoRepository.findAllById(pedidosRequest.getProductosIds());
+        List<Producto> productos = productoRepository.findAllById(pedidosRequest.getPedidosIds());
 
         // 3. Calcular precio total
         Double precioTotal = productos.stream()
