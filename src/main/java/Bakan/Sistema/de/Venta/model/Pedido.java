@@ -7,7 +7,8 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter @Setter
-@Entity
+@Entity(name="pedido")
+@Table(name="pedidos")
 public class Pedido {
 
     @Id
