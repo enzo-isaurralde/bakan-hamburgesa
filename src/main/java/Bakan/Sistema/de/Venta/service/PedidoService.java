@@ -22,7 +22,6 @@ public class PedidoService {
     private final ClienteRepository clienteRepository;
     private final ProductoRepository productoRepository;
 
-    // Constructor con inyección de dependencias
     public PedidoService(PedidoRepository pedidoRepository,
                          ClienteRepository clienteRepository,
                          ProductoRepository productoRepository) {
@@ -31,21 +30,18 @@ public class PedidoService {
         this.productoRepository = productoRepository;
     }
 
+    // Crear pedido
     public PedidosResponseDTO crearPedido(PedidosRequestDTO pedidosRequest) {
-        // 1. Crear Cliente
         Cliente cliente = new Cliente();
         cliente.setNombre(pedidosRequest.getCliente().getNombre());
         clienteRepository.save(cliente);
 
-        // 2. Buscar productos por IDs
         List<Producto> productos = productoRepository.findAllById(pedidosRequest.getPedidosIds());
 
-        // 3. Calcular precio total
         Double precioTotal = productos.stream()
                 .mapToDouble(Producto::getPrecio)
                 .sum();
 
-        // 4. Crear Pedido
         Pedido pedido = new Pedido();
         pedido.setCliente(cliente);
         pedido.setProductos(productos);
@@ -54,20 +50,51 @@ public class PedidoService {
 
         pedidoRepository.save(pedido);
 
-        // 5. Armar respuesta DTO
+        return mapToResponseDTO(pedido, "Pedido recibido para " + cliente.getNombre());
+    }
+
+    // Listar pedidos pendientes
+    public List<PedidosResponseDTO> listarPedidosPendientes() {
+        return pedidoRepository.findByEstado(EstadoPedido.PENDIENTE)
+                .stream()
+                .map(p -> mapToResponseDTO(p, "Pedido pendiente de validación"))
+                .collect(Collectors.toList());
+    }
+
+    // Validar pedido
+    public PedidosResponseDTO validarPedido(Long id) {
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+        pedido.setEstado(EstadoPedido.VALIDADO);
+        pedidoRepository.save(pedido);
+
+        return mapToResponseDTO(pedido, "Pedido validado correctamente");
+    }
+
+    // Cancelar pedido
+    public PedidosResponseDTO cancelarPedido(Long id) {
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+        pedido.setEstado(EstadoPedido.CANCELADO);
+        pedidoRepository.save(pedido);
+
+        return mapToResponseDTO(pedido, "Pedido cancelado correctamente");
+    }
+
+    // Método auxiliar para mapear Pedido → PedidosResponseDTO
+    private PedidosResponseDTO mapToResponseDTO(Pedido pedido, String mensaje) {
         PedidosResponseDTO response = new PedidosResponseDTO();
         response.setIdPedido(pedido.getId());
         response.setEstado(pedido.getEstado().name());
-        response.setPrecioTotal(precioTotal);
-        response.setProductos(productos.stream().map(p -> {
+        response.setPrecioTotal(pedido.getPrecioTotal());
+        response.setProductos(pedido.getProductos().stream().map(p -> {
             ProductoDTO dto = new ProductoDTO();
             dto.setId(p.getId());
             dto.setNombre(p.getNombre());
             dto.setPrecio(p.getPrecio());
             return dto;
         }).collect(Collectors.toList()));
-        response.setMensajeConfirmacion("Pedido recibido para " + cliente.getNombre());
-
+        response.setMensajeConfirmacion(mensaje);
         return response;
     }
 }
