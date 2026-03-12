@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakan Hamburguesa - Panel de Control</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app">
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">🍔</span>
+            <h1>Bakan Hamburguesa</h1>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-primary" onclick="mostrarModalNuevoPedido()">
+                + Nuevo Pedido
+            </button>
+            <a href="cocina.html" class="btn btn-secondary">👨‍🍳 Vista Cocina</a>
+        </div>
+    </header>
+
+    <!-- Dashboard Stats -->
+    <div class="dashboard">
+        <div class="stat-card" data-estado="PENDIENTE">
+            <div class="stat-number" id="count-pendiente">0</div>
+            <div class="stat-label">Pendientes</div>
+            <div class="stat-icon">⏳</div>
+        </div>
+        <div class="stat-card" data-estado="VALIDADO">
+            <div class="stat-number" id="count-validado">0</div>
+            <div class="stat-label">Validados</div>
+            <div class="stat-icon">✓</div>
+        </div>
+        <div class="stat-card" data-estado="EN_PREPARACION">
+            <div class="stat-number" id="count-preparacion">0</div>
+            <div class="stat-label">En Preparación</div>
+            <div class="stat-icon">👨‍🍳</div>
+        </div>
+        <div class="stat-card" data-estado="LISTO">
+            <div class="stat-number" id="count-listo">0</div>
+            <div class="stat-label">Listos</div>
+            <div class="stat-icon">🍽️</div>
+        </div>
+        <div class="stat-card" data-estado="ENTREGADO">
+            <div class="stat-number" id="count-entregado">0</div>
+            <div class="stat-label">Entregados Hoy</div>
+            <div class="stat-icon">🛵</div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters">
+        <button class="filter-btn active" data-filter="todos">Todos</button>
+        <button class="filter-btn" data-filter="PENDIENTE">Pendientes</button>
+        <button class="filter-btn" data-filter="VALIDADO">Validados</button>
+        <button class="filter-btn" data-filter="EN_PREPARACION">En Preparación</button>
+        <button class="filter-btn" data-filter="LISTO">Listos</button>
+    </div>
+
+    <!-- Kanban Board -->
+    <div class="kanban-board">
+        <div class="kanban-column" data-estado="PENDIENTE">
+            <h3>⏳ Pendientes</h3>
+            <div class="pedidos-list" id="column-PENDIENTE"></div>
+        </div>
+        <div class="kanban-column" data-estado="VALIDADO">
+            <h3>✓ Validados</h3>
+            <div class="pedidos-list" id="column-VALIDADO"></div>
+        </div>
+        <div class="kanban-column" data-estado="EN_PREPARACION">
+            <h3>👨‍🍳 En Preparación</h3>
+            <div class="pedidos-list" id="column-EN_PREPARACION"></div>
+        </div>
+        <div class="kanban-column" data-estado="LISTO">
+            <h3>🍽️ Listos</h3>
+            <div class="pedidos-list" id="column-LISTO"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nuevo Pedido -->
+<div id="modal-pedido" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModal()">&times;</span>
+        <h2>Nuevo Pedido</h2>
+        <form id="form-pedido">
+            <div class="form-group">
+                <label>Cliente:</label>
+                <input type="text" id="cliente-nombre" required placeholder="Nombre (WhatsApp)">
+            </div>
+            <div id="productos-container">
+                <!-- Productos se cargan dinámicamente -->
+            </div>
+            <button type="button" class="btn btn-secondary" onclick="agregarProducto()">+ Agregar Producto</button>
+            <div class="total">Total: $<span id="total-pedido">0</span></div>
+            <button type="submit" class="btn btn-primary btn-block">Crear Pedido</button>
+        </form>
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

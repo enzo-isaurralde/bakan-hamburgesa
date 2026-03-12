@@ -2,12 +2,18 @@ package Bakan.Sistema.de.Venta.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import Bakan.Sistema.de.Venta.model.Cliente;
-
 
 import java.util.List;
-@Getter @Setter
+
+@Getter
+@Setter
 public class PedidosRequestDTO {
-    private Cliente cliente;
-    private List<Long> pedidosIds;
+    private ClienteDTO cliente;
+    private List<ProductoDTO> productos;  // CAMBIO: antes era List<Long> pedidosIds
+
+    @Getter
+    @Setter
+    public static class ClienteDTO {
+        private String nombre;
+    }
 }
