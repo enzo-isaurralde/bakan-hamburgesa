@@ -2,11 +2,14 @@ package Bakan.Sistema.de.Venta.repository;
 
 import Bakan.Sistema.de.Venta.model.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface ProductoRepository extends JpaRepository <Producto, Long> {
+import java.util.List;
 
-// Ejemplo: buscar productos disponibles //
-// List<Producto> findByDisponibleTrue();
+@Repository
+public interface ProductoRepository extends JpaRepository<Producto, Long> {
+    @Query("SELECT p FROM producto p WHERE p.disponible = true")
+    List<Producto> findByDisponibleTrue();
+
 }

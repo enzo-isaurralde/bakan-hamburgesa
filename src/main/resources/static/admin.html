@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAKAN - Panel de Control</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <span class="logo-icon">🍔</span>
+        <span>BAKAN Admin</span>
+    </div>
+    <nav class="nav-links">
+        <a href="#" class="active" onclick="mostrarSeccion('pedidos')">Pedidos</a>
+        <a href="#" onclick="mostrarSeccion('productos')">Productos</a>
+    </nav>
+</header>
+
+<!-- SECCIÓN PEDIDOS -->
+<div id="seccion-pedidos">
+    <div class="dashboard">
+        <div class="stat-card pendiente">
+            <div class="stat-number" id="count-pendiente">0</div>
+            <div class="stat-label">Pendientes</div>
+            <div class="stat-icon">⏳</div>
+        </div>
+        <div class="stat-card validado">
+            <div class="stat-number" id="count-validado">0</div>
+            <div class="stat-label">Validados</div>
+            <div class="stat-icon">✓</div>
+        </div>
+        <div class="stat-card preparacion">
+            <div class="stat-number" id="count-en_preparacion">0</div>
+            <div class="stat-label">En Preparación</div>
+            <div class="stat-icon">👨‍🍳</div>
+        </div>
+        <div class="stat-card listo">
+            <div class="stat-number" id="count-listo">0</div>
+            <div class="stat-label">Listos</div>
+            <div class="stat-icon">🍽️</div>
+        </div>
+        <div class="stat-card entregado">
+            <div class="stat-number" id="count-entregado">0</div>
+            <div class="stat-label">Entregados Hoy</div>
+            <div class="stat-icon">🛵</div>
+        </div>
+    </div>
+
+    <div class="filters">
+        <button class="filter-btn active" onclick="filtrarPedidos('todos')">Todos</button>
+        <button class="filter-btn" onclick="filtrarPedidos('PENDIENTE')">Pendientes</button>
+        <button class="filter-btn" onclick="filtrarPedidos('VALIDADO')">Validados</button>
+        <button class="filter-btn" onclick="filtrarPedidos('EN_PREPARACION')">En Preparación</button>
+        <button class="filter-btn" onclick="filtrarPedidos('LISTO')">Listos</button>
+    </div>
+
+    <div class="kanban-board">
+        <div class="kanban-column">
+            <h3>⏳ Pendientes</h3>
+            <div class="pedidos-list" id="column-PENDIENTE"></div>
+        </div>
+        <div class="kanban-column">
+            <h3>✓ Validados</h3>
+            <div class="pedidos-list" id="column-VALIDADO"></div>
+        </div>
+        <div class="kanban-column">
+            <h3>👨‍🍳 En Preparación</h3>
+            <div class="pedidos-list" id="column-EN_PREPARACION"></div>
+        </div>
+        <div class="kanban-column">
+            <h3>🍽️ Listos</h3>
+            <div class="pedidos-list" id="column-LISTO"></div>
+        </div>
+        <div class="kanban-column">
+            <h3>✓ Entregados</h3>
+            <div class="pedidos-list" id="column-ENTREGADO"></div>
+        </div>
+    </div>
+</div>
+
+<!-- SECCIÓN PRODUCTOS -->
+<div id="seccion-productos" style="display: none;">
+    <div class="productos-admin">
+        <div class="section-header">
+            <h2 class="section-title">Gestión de Productos</h2>
+            <p style="color: var(--text-light);">Activá o desactivá productos para controlar el stock visible</p>
+        </div>
+        <div class="productos-grid-admin" id="productos-admin-list">
+            <div class="empty-state">
+                <div class="empty-state-icon">📦</div>
+                <p>Cargando productos...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/admin.js"></script>
+<script>
+    function mostrarSeccion(seccion) {
+        document.getElementById('seccion-pedidos').style.display = seccion === 'pedidos' ? 'block' : 'none';
+        document.getElementById('seccion-productos').style.display = seccion === 'productos' ? 'block' : 'none';
+
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>

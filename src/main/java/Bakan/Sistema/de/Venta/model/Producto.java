@@ -12,8 +12,14 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private  String nombre;
-    private  Double precio;
-    private  Boolean disponible = true;
+    private String nombre;
+    private Double precio;
+    private Boolean disponible = true;
 
+    // Campos agregados en V4
+    private String descripcion;
+    private String emoji;
+    private String categoria;
+    private Boolean esPopular = false;
+    private Boolean esNuevo = false;
 }
