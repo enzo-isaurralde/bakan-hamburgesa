@@ -159,7 +159,7 @@ function renderizarModalCarrito() {
     document.getElementById('resumen-pedido').style.display = 'block';
     document.getElementById('formulario-pedido').style.display = 'block';
     document.getElementById('resumen-subtotal').textContent = `$${subtotal.toLocaleString()}`;
-    document.getElementById('resumen-total').textContent = `$${(subtotal + 500).toLocaleString()}`;
+    document.getElementById('resumen-total').textContent = `$${subtotal.toLocaleString()}`;
 }
 
 // Modificar cantidad en modal
@@ -226,8 +226,7 @@ async function enviarWhatsApp() {
         
         mensaje += "━━━━━━━━━━━━━━━━━━━━\n";
         mensaje += `*Subtotal:* $${total.toLocaleString()}\n`;
-        mensaje += `*Envío:* $500\n`;
-        mensaje += `*TOTAL:* $${(total + 500).toLocaleString()}\n\n`;
+        mensaje += `*TOTAL:* $${total.toLocaleString()}\n\n`;
         
         if (notas) {
             mensaje += `📝 *Notas:* ${notas}\n\n`;
