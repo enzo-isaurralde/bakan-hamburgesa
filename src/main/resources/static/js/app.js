@@ -35,17 +35,20 @@ function renderizarProductos() {
         
         return `
             <div class="producto-card ${agotado ? 'agotado' : ''}">
-                <div class="producto-imagen">
-                    ${p.esNuevo ? '<span class="badge badge-nuevo">NUEVA</span>' : ''}
-                    ${p.esPopular && !p.esNuevo ? '<span class="badge badge-popular">MÁS VENDIDA</span>' : ''}
-                    ${p.emoji || '🍔'}
-                </div>
+               <div class="producto-imagen">
+                   ${p.esNuevo ? '<span class="badge badge-nuevo">NUEVA</span>' : ''}
+                   ${p.esPopular && !p.esNuevo ? '<span class="badge badge-popular">MÁS VENDIDA</span>' : ''}
+                   ${p.imagenUrl
+                       ? `<img src="${p.imagenUrl}" alt="${p.nombre}" style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; border-radius: 20px 20px 0 0;">`
+                       : (p.emoji || '🍔')
+                   }
+               </div>
                 <div class="producto-info">
                     <div class="producto-header">
                         <h3 class="producto-nombre">${p.nombre}</h3>
                         <span class="producto-precio">$${p.precio.toLocaleString()}</span>
                     </div>
-                    <p class="producto-desc">${p.descripcion}</p>
+                    <p class="producto-desc">${p.descripcion || ''}</p>
                     
                     ${agotado 
                         ? '<button class="btn-stock agotado">Sin Stock</button>'

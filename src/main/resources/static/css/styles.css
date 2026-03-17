@@ -222,7 +222,7 @@ body {
     justify-content: center;
     font-size: 5rem;
     position: relative;
-    overflow: hidden;
+    overflow: hidden;  /* ← verificá que esté esta línea */
 }
 
 .producto-imagen::before {

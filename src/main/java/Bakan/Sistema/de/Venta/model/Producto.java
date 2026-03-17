@@ -22,4 +22,7 @@ public class Producto {
     private String categoria;
     private Boolean esPopular = false;
     private Boolean esNuevo = false;
+    // Campos agregados en V6
+    @Column(name = "imagen_url")
+    private String imagenUrl;
 }
