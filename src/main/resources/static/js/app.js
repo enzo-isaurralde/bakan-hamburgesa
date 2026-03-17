@@ -181,79 +181,74 @@ function modificarCantidad(id, cambio) {
         cerrarModal();
     }
 }
-
-// Enviar por WhatsApp
+// Enviar pedido por WhatsApp
 async function enviarWhatsApp() {
     const nombre = document.getElementById('cliente-nombre').value.trim();
     if (!nombre) {
         alert('Por favor ingresá tu nombre');
         return;
     }
-    
-    const notas = document.querySelector('.notas-pedido').value;
+
+    const notas = document.querySelector('.notas-pedido[rows]').value;
     const items = Object.entries(carrito);
-    
-    // Crear pedido en el backend primero
+
     const productosPedido = items.map(([id, cantidad]) => ({
         id: parseInt(id),
         cantidad: cantidad
     }));
-    
+
     try {
         const response = await fetch(`${API_URL}/pedidos`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 cliente: { nombre: nombre },
-                productos: productosPedido
+                productos: productosPedido,
+                notas: notas
             })
         });
-        
+
         if (!response.ok) throw new Error('Error al crear pedido');
-        
+
         const pedido = await response.json();
-        
-        // Generar mensaje de WhatsApp
+
         let mensaje = `🍔 *PEDIDO BAKAN BURGER - #${pedido.idPedido}*\n`;
         mensaje += "━━━━━━━━━━━━━━━━━━━━\n\n";
-        
+
         let total = 0;
         pedido.productos.forEach((p, index) => {
             mensaje += `*${index + 1}. ${p.nombre}* x${p.cantidad}\n`;
             mensaje += `   💰 $${p.subtotal.toLocaleString()}\n\n`;
             total += p.subtotal;
         });
-        
+
         mensaje += "━━━━━━━━━━━━━━━━━━━━\n";
-        mensaje += `*Subtotal:* $${total.toLocaleString()}\n`;
         mensaje += `*TOTAL:* $${total.toLocaleString()}\n\n`;
-        
-        if (notas) {
-            mensaje += `📝 *Notas:* ${notas}\n\n`;
-        }
-        
         mensaje += `👤 *Cliente:* ${nombre}\n`;
-        mensaje += "📞 *Teléfono:* ___________\n";
-        mensaje += "🏠 *Dirección:* ___________\n";
+
+        if (notas) {
+            mensaje += `📝 *Notas:* ${notas}\n`;
+        }
+
         mensaje += "💳 *Pago:* Efectivo/Transferencia\n";
-        
-        // Número de WhatsApp del local (cambiar por el real)
+
         const telefonoLocal = "5491123456789";
         const url = `https://wa.me/${telefonoLocal}?text=${encodeURIComponent(mensaje)}`;
-        
+
         window.open(url, '_blank');
-        
-        // Limpiar carrito
+
         carrito = {};
         renderizarProductos();
         actualizarCarritoFlotante();
         cerrarModal();
-        
+
     } catch (error) {
         alert('Error al procesar el pedido. Intentá de nuevo.');
         console.error(error);
     }
 }
+        
+
 
 // Inicializar
 document.addEventListener('DOMContentLoaded', cargarProductos);

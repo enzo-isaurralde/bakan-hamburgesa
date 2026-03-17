@@ -33,6 +33,9 @@ public class Pedido {
     @Column(name = "fecha_pedido")
     private LocalDateTime fechaPedido = LocalDateTime.now();
 
+    @Column(name = "notas")
+    private String notas;
+
     public void calcularTotal() {
         this.precioTotal = lineas.stream()
                 .mapToDouble(LineaPedido::getSubtotal)

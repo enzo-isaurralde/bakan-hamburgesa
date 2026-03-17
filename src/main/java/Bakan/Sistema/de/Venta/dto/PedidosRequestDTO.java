@@ -9,7 +9,8 @@ import java.util.List;
 @Setter
 public class PedidosRequestDTO {
     private ClienteDTO cliente;
-    private List<ProductoDTO> productos;  // CAMBIO: antes era List<Long> pedidosIds
+    private List<ProductoDTO> productos;
+    private String notas; // ← agregar esto
 
     @Getter
     @Setter

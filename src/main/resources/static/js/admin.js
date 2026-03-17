@@ -81,7 +81,8 @@ function crearPedidoCard(pedido) {
             <span class="pedido-id">#${pedido.idPedido}</span>
             <span class="pedido-tiempo">${tiempo}</span>
         </div>
-        <div class="pedido-cliente">${pedido.cliente?.nombre || 'Sin nombre'}</div>
+        <div class="pedido-cliente">${pedido.nombreCliente || 'Sin nombre'}</div>
+        ${pedido.notas ? `<div class="pedido-notas">📝 ${pedido.notas}</div>` : ''}
         <div class="pedido-productos">${productosHtml}</div>
         <div class="pedido-total">Total: $${formatearPrecio(pedido.precioTotal)}</div>
         <div class="pedido-acciones">${acciones}</div>

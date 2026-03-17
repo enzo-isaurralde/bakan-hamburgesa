@@ -13,4 +13,6 @@ public class PedidosResponseDTO {
     private Double precioTotal;
     private List<ProductoDTO> productos;
     private String mensajeConfirmacion;
+    private String notas;
+    private String nombreCliente; //
 }

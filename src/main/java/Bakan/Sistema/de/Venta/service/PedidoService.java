@@ -40,6 +40,7 @@ public class PedidoService {
 
         Pedido pedido = new Pedido();
         pedido.setCliente(cliente);
+        pedido.setNotas(pedidosRequest.getNotas()); // Guardar las notas del pedido
         pedido.setEstado(EstadoPedido.PENDIENTE);  // Usar el enum SEPARADO
 
         for (ProductoDTO productoDTO : pedidosRequest.getProductos()) {
@@ -129,6 +130,8 @@ public class PedidoService {
 
         response.setProductos(productosDTO);
         response.setMensajeConfirmacion(mensaje);
+        response.setNotas(pedido.getNotas());
+        response.setNombreCliente(pedido.getCliente().getNombre());
         return response;
     }
     @Transactional
