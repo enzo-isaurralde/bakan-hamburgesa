@@ -62,22 +62,30 @@ function renderizarProductos() {
     }).join('');
 }
 
-// Filtrar por categoría
 function filtrarCategoria(categoria) {
     categoriaActual = categoria;
-    
+
+    // Scroll al título "Nuestro Menú"
+    const menuTitulo = document.getElementById('menu-titulo');
+    const headerHeight = document.querySelector('.header').offsetHeight;
+    const categoriasHeight = document.querySelector('.categorias').offsetHeight;
+    const offsetTop = menuTitulo.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+        top: offsetTop - headerHeight - categoriasHeight - 10,
+        behavior: 'smooth'
+    });
+
     // Actualizar botones
     document.querySelectorAll('.cat-btn').forEach(btn => {
         btn.classList.remove('active');
-        if (btn.textContent.includes(categoria === 'HAMBURGUESAS' ? 'Hamburguesas' : 
+        if (btn.textContent.includes(categoria === 'HAMBURGUESAS' ? 'Hamburguesas' :
                                       categoria === 'PAPAS' ? 'Papas' : 'Bebidas')) {
             btn.classList.add('active');
         }
     });
-    
+
     renderizarProductos();
 }
-
 // Agregar al carrito
 function agregarAlCarrito(id) {
     const producto = productos.find(p => p.id === id);

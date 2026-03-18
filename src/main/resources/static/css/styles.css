@@ -27,7 +27,7 @@ body {
 
 /* HEADER */
 .header {
-    background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, transparent 100%);
+    background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.75) 100%);
     padding: 20px;
     position: fixed;
     width: 100%;
@@ -37,6 +37,7 @@ body {
     justify-content: space-between;
     align-items: center;
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .logo {
@@ -86,38 +87,87 @@ body {
 /* HERO */
 .hero {
     margin-top: 80px;
-    padding: 60px 20px 40px;
-    text-align: center;
-    background: radial-gradient(ellipse at center, rgba(230,57,70,0.15) 0%, transparent 70%);
+    padding: 20px;
+    background: var(--negro);
+    margin-bottom: 0;
 }
 
-.hero h1 {
+.hero-inner {
+    position: relative;
+    height: 340px;
+    border-radius: 20px;
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1400&q=80');
+    background-size: cover;
+    background-position: center center;
+    filter: brightness(0.45) saturate(1.1);
+}
+
+.hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(10,10,10,0.2) 0%,
+        rgba(10,10,10,0.5) 60%,
+        rgba(20,20,20,0.95) 100%
+    );
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.hero-content h1 {
     font-family: 'Bebas Neue', cursive;
     font-size: 3.5rem;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     text-transform: uppercase;
     letter-spacing: 2px;
+    line-height: 1;
 }
 
-.hero p {
+.hero-content p {
     color: var(--gris);
-    font-size: 1.1rem;
-    max-width: 600px;
-    margin: 0 auto;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .hero-inner { height: 260px; border-radius: 14px; }
+    .hero-content h1 { font-size: 2.4rem; }
 }
 
 /* CATEGORIAS */
 .categorias {
     display: flex;
     gap: 10px;
-    padding: 20px;
+    padding: 16px 20px;
     overflow-x: auto;
+    overflow-y: visible;
     scrollbar-width: none;
     position: sticky;
     top: 80px;
     background: var(--negro);
     z-index: 100;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .categorias::-webkit-scrollbar {
@@ -153,7 +203,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    padding-bottom: 100px;
+    padding-bottom: 60px;
 }
 
 .section-title {
@@ -222,7 +272,7 @@ body {
     justify-content: center;
     font-size: 5rem;
     position: relative;
-    overflow: hidden;  /* ← verificá que esté esta línea */
+    overflow: hidden;
 }
 
 .producto-imagen::before {
@@ -319,6 +369,136 @@ body {
 
 .btn-stock.agotado::before {
     content: '✕';
+}
+
+/* SECCIÓN UBICACIÓN */
+.ubicacion-section {
+    max-width: 1200px;
+    margin: 0 auto 100px;
+    padding: 0 20px;
+}
+
+.ubicacion-banner {
+    background: linear-gradient(135deg, var(--negro-claro) 0%, rgba(230,57,70,0.12) 100%);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-bottom: none;
+    border-radius: 20px 20px 0 0;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ubicacion-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.ubicacion-icon { font-size: 1.8rem; line-height: 1; }
+
+.ubicacion-titulo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    color: var(--blanco);
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.ubicacion-subtitulo {
+    color: var(--gris);
+    font-size: 0.85rem;
+    margin: 2px 0 0;
+}
+
+.ubicacion-llama {
+    font-size: 2rem;
+    animation: flicker 1.8s ease-in-out infinite;
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: .7; transform: scale(1.15) rotate(-5deg); }
+}
+
+.ubicacion-body {
+    background: var(--negro-claro);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0 0 20px 20px;
+    display: flex;
+    overflow: hidden;
+}
+
+.ubicacion-info {
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    min-width: 230px;
+    flex: 0 0 auto;
+    border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.ubicacion-dato {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.dato-icon { font-size: 1.2rem; line-height: 1.4; flex-shrink: 0; }
+
+.ubicacion-dato strong {
+    display: block;
+    color: var(--naranja);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+    font-weight: 600;
+}
+
+.ubicacion-dato p {
+    color: var(--gris);
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.btn-como-llegar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--rojo);
+    color: var(--blanco);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 12px 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background .2s, transform .15s;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+.btn-como-llegar:hover {
+    background: var(--rojo-hover);
+    transform: scale(1.02);
+}
+
+.mapa-wrapper {
+    flex: 1;
+    min-height: 320px;
+}
+
+.mapa-iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    border: none;
+    display: block;
+    filter: grayscale(25%) contrast(1.05) brightness(0.9);
 }
 
 /* CARRITO FLOTANTE */
@@ -599,5 +779,19 @@ body {
 
     .logo {
         font-size: 1.8rem;
+    }
+
+    .ubicacion-body {
+        flex-direction: column;
+    }
+
+    .ubicacion-info {
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .mapa-wrapper,
+    .mapa-iframe {
+        min-height: 240px;
     }
 }
