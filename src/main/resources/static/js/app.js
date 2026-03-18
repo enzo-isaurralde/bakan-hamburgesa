@@ -143,7 +143,12 @@ function renderizarModalCarrito() {
         
         return `
             <div class="item-carrito">
-                <div class="item-imagen">${producto.emoji || '🍔'}</div>
+                <div class="item-imagen">
+                    ${producto.imagenUrl
+                        ? `<img src="${producto.imagenUrl}" alt="${producto.nombre}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">`
+                        : (producto.emoji || '🍔')
+                    }
+                </div>
                 <div class="item-info">
                     <div class="item-nombre">${producto.nombre}</div>
                     <div class="item-detalles">$${producto.precio.toLocaleString()} c/u</div>
