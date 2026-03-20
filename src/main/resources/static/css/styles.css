@@ -68,7 +68,7 @@ body {
     content: '';
     width: 8px;
     height: 8px;
-    background: var(--verde);
+    background: var(--estado-color, var(--verde));  /* ← usa variable */
     border-radius: 50%;
     animation: pulse 2s infinite;
 }

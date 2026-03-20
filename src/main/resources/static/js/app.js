@@ -3,6 +3,7 @@ const API_URL = 'http://localhost:8080/api';
 let productos = [];
 let carrito = {};
 let categoriaActual = 'HAMBURGUESAS';
+let localAbierto = false;
 
 // Cargar productos desde el backend
 async function cargarProductos() {
@@ -50,12 +51,14 @@ function renderizarProductos() {
                     </div>
                     <p class="producto-desc">${p.descripcion || ''}</p>
                     
-                    ${agotado 
-                        ? '<button class="btn-stock agotado">Sin Stock</button>'
-                        : `<button class="btn-stock" onclick="agregarAlCarrito(${p.id})">
-                            ${enCarrito > 0 ? `En Carrito (${enCarrito})` : 'En Stock'}
-                           </button>`
-                    }
+                   ${agotado
+                       ? '<button class="btn-stock agotado" disabled>Sin Stock</button>'
+                       : !localAbierto
+                           ? '<button class="btn-stock" disabled style="background:#1a1a1a; color:#ef4444; border: 1px solid #ef4444; cursor:not-allowed;">Local cerrado</button>'
+                           : `<button class="btn-stock" onclick="agregarAlCarrito(${p.id})">
+                               ${enCarrito > 0 ? `En Carrito (${enCarrito})` : 'En Stock'}
+                              </button>`
+                   }
                 </div>
             </div>
         `;
@@ -287,6 +290,48 @@ function mostrarMensajeExito(mensaje) {
     contenedor.classList.remove("error");
     contenedor.classList.add("exito");
 }
+
+
+// Función para actualizar el estado del horario
+async function actualizarEstadoHorario() {
+    try {
+        // ── MODO TEST ──────────────────────────────────────────
+        // const data = { abierto: false, cierreTexto: 'Abre hoy a las 10:00 hs' };
+        // const data = { abierto: true,  cierreTexto: 'Cierra 22:00 hs' };
+        // ── FIN MODO TEST ──────────────────────────────────────
+
+        const res = await fetch(`${API_URL}/horario/estado`);
+        const data = await res.json();
+
+        const estadoEl  = document.getElementById('estado-local');
+        const horarioEl = document.getElementById('horario-cierre');
+
+        if (data.abierto) {
+            localAbierto = true;
+            estadoEl.textContent = 'Abierto ahora';
+            estadoEl.style.color = '#22c55e';
+            document.documentElement.style.setProperty('--estado-color', '#22c55e');
+        } else {
+            localAbierto = false;
+            estadoEl.textContent = 'Cerrado';
+            estadoEl.style.color = '#ef4444';
+            document.documentElement.style.setProperty('--estado-color', '#ef4444');
+        }
+
+        horarioEl.textContent = data.cierreTexto;
+
+    } catch (error) {
+        // Si el backend no responde, asumimos abierto para no bloquear la página
+        console.error('Error al obtener estado del horario:', error);
+        localAbierto = true;
+        document.getElementById('estado-local').textContent = 'Estado desconocido';
+    } finally {
+        // Siempre renderiza los productos, pase lo que pase
+        renderizarProductos();
+    }
+}
+document.addEventListener('DOMContentLoaded', actualizarEstadoHorario);
+setInterval(actualizarEstadoHorario, 5 * 60 * 1000); // refresca cada 5 min
 
         
 
