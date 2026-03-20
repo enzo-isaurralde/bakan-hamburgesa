@@ -201,7 +201,7 @@ function modificarCantidad(id, cambio) {
 async function enviarWhatsApp() {
     const nombre = document.getElementById('cliente-nombre').value.trim();
     if (!nombre) {
-        alert('Por favor ingresá tu nombre');
+        mostrarMensajeError('Por favor ingresá tu nombre');
         return;
     }
 
@@ -224,10 +224,19 @@ async function enviarWhatsApp() {
             })
         });
 
-        if (!response.ok) throw new Error('Error al crear pedido');
+        if (!response.ok) {
+            // Capturamos el JSON de error y mostramos el mensaje
+            const err = await response.json();
+            mostrarMensajeError(err.mensaje || 'Error al procesar el pedido');
+            return;
+        }
 
         const pedido = await response.json();
 
+        // Si todo salió bien, mostramos mensaje de éxito
+        mostrarMensajeExito('Pedido enviado correctamente ✅');
+
+        // ... resto de tu código para abrir WhatsApp ...
         let mensaje = `🍔 *PEDIDO BAKAN BURGER - #${pedido.idPedido}*\n`;
         mensaje += "━━━━━━━━━━━━━━━━━━━━\n\n";
 
@@ -259,10 +268,26 @@ async function enviarWhatsApp() {
         cerrarModal();
 
     } catch (error) {
-        alert('Error al procesar el pedido. Intentá de nuevo.');
+        mostrarMensajeError('Error al procesar el pedido. Intentá de nuevo.');
         console.error(error);
     }
 }
+
+// Funciones auxiliares para mostrar mensajes
+function mostrarMensajeError(mensaje) {
+    const contenedor = document.getElementById("mensaje-pedido");
+    contenedor.innerText = mensaje;
+    contenedor.classList.remove("exito");
+    contenedor.classList.add("error");
+}
+
+function mostrarMensajeExito(mensaje) {
+    const contenedor = document.getElementById("mensaje-pedido");
+    contenedor.innerText = mensaje;
+    contenedor.classList.remove("error");
+    contenedor.classList.add("exito");
+}
+
         
 
 

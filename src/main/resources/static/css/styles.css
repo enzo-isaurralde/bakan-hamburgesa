@@ -794,4 +794,20 @@ body {
     .mapa-iframe {
         min-height: 240px;
     }
+    /* MENSAJES DE PEDIDO */
+    .mensaje {
+        margin-top: 15px;
+        font-weight: bold;
+        text-align: center;
+        font-size: 0.95rem;
+    }
+
+    .mensaje.error {
+        color: var(--rojo);
+    }
+
+    .mensaje.exito {
+        color: var(--verde);
+    }
+
 }

@@ -16,13 +16,10 @@ import java.util.List;
 public class PedidoController {
 
     private final PedidoService pedidoService;
-    private final HorarioService horarioService;
 
 
-
-    public PedidoController(PedidoService pedidoService , HorarioService horarioService) {
+    public PedidoController(PedidoService pedidoService) {
         this.pedidoService = pedidoService;
-        this.horarioService = horarioService;
     }
 
     // Crear un pedido (cliente/WhatsApp)
@@ -81,11 +78,5 @@ public class PedidoController {
         PedidosResponseDTO response = pedidoService.cancelarPedido(id);
         return ResponseEntity.ok(response);
     }
-    // En PedidoController, temporal para desarrollo:
-    @PostMapping("/test-horario")
-    public ResponseEntity<?> testHorario(@RequestParam String fechaHora) {
-        // Ej: fechaHora = "2025-03-23T00:00:00"
-        horarioService.validarHorario(LocalDateTime.parse(fechaHora));
-        return ResponseEntity.ok("Local abierto ✅");
-    }
+
 }

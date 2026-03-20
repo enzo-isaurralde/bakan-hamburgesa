@@ -527,4 +527,21 @@ body {
     .dashboard {
         grid-template-columns: repeat(2, 1fr);
     }
+    .btn-crear {
+        margin-left: 1.5rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-crear:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+    }
+
 }
