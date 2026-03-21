@@ -16,8 +16,16 @@
         <a href="#" class="active" onclick="mostrarSeccion('pedidos')">Pedidos</a>
         <a href="#" onclick="mostrarSeccion('productos')">Productos</a>
     </nav>
-    <button class="btn btn-primary btn-crear" onclick="registrarPedidoCaja()">➕ Crear Pedido</button>
+    <a href="http://localhost:8080/index.html" target="_blank" class="btn btn-primary btn-crear">
+        ➕ Nuevo Pedido
+    </a>
 </header>
+<div class="buscador-pedido">
+    <input type="number" id="input-buscar-pedido" placeholder="Buscar pedido por #ID..." min="1"/>
+    <button class="btn btn-primary" onclick="buscarPedido()">🔍 Buscar</button>
+    <button class="btn btn-secondary" onclick="limpiarBusqueda()">✕ Limpiar</button>
+    <div id="resultado-busqueda"></div>
+</div>
 
 
 <!-- SECCIÓN PEDIDOS -->
@@ -50,6 +58,7 @@
         </div>
     </div>
 
+
     <div class="filters">
         <button class="filter-btn active" onclick="filtrarPedidos('todos')">Todos</button>
         <button class="filter-btn" onclick="filtrarPedidos('PENDIENTE')">Pendientes</button>
@@ -57,6 +66,7 @@
         <button class="filter-btn" onclick="filtrarPedidos('EN_PREPARACION')">En Preparación</button>
         <button class="filter-btn" onclick="filtrarPedidos('LISTO')">Listos</button>
     </div>
+
 
     <div class="kanban-board">
         <div class="kanban-column">

@@ -28,7 +28,7 @@ async function cargarPedidos() {
 // Cargar productos
 async function cargarProductos() {
     try {
-        const response = await fetch(`${API_URL}/productos`);
+        const response = await fetch(`${API_URL}/productos/todos`);
         if (!response.ok) throw new Error('Error al cargar productos');
 
         productos = await response.json();
@@ -144,7 +144,8 @@ async function toggleDisponibilidad(idProducto, disponibleActual) {
         if (!response.ok) throw new Error('Error al actualizar');
 
         const data = await response.json();
-        mostrarNotificacion(`Producto ${data.disponible ? 'disponible' : 'agotado'}`, 'success');
+        mostrarNotificacion(`${data.disponible ? '✓ En Stock' : '✕ Sin Stock — producto desactivado'}`,
+                            data.disponible ? 'success' : 'error');
         cargarProductos();
 
     } catch (error) {
@@ -169,10 +170,15 @@ function renderizarProductosAdmin() {
             <div class="producto-admin-desc">${p.descripcion || 'Sin descripción'}</div>
             <div class="producto-admin-estado">
                 <span class="estado-badge ${p.disponible ? 'estado-disponible' : 'estado-agotado'}">
-                    ${p.disponible ? '✓ En Stock' : '✕ Agotado'}
+                    ${p.disponible ? '✓ En Stock' : '✕ Sin Stock'}
                 </span>
-                <div class="toggle-switch ${p.disponible ? 'active' : ''}"
-                     onclick="toggleDisponibilidad(${p.id}, ${p.disponible})">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 0.8rem; color: ${p.disponible ? 'var(--text-light)' : '#ef4444'};">
+                        ${p.disponible ? 'Desactivar' : 'Sin stock'}
+                    </span>
+                    <div class="toggle-switch ${p.disponible ? 'active' : ''}"
+                         onclick="toggleDisponibilidad(${p.id}, ${p.disponible})">
+                    </div>
                 </div>
             </div>
         </div>
@@ -216,4 +222,54 @@ function mostrarNotificacion(mensaje, tipo = 'info') {
     notif.textContent = mensaje;
     document.body.appendChild(notif);
     setTimeout(() => notif.remove(), 3000);
+}
+async function buscarPedido() {
+    const id = document.getElementById('input-buscar-pedido').value.trim();
+    const resultado = document.getElementById('resultado-busqueda');
+
+    if (!id) {
+        resultado.innerHTML = '<p style="color:var(--warning);">Ingresá un número de pedido.</p>';
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/pedidos/${id}`);
+
+        if (!response.ok) {
+            resultado.innerHTML = `<p style="color:var(--danger);">❌ Pedido #${id} no encontrado.</p>`;
+            return;
+        }
+
+        const pedido = await response.json();
+
+        const colores = {
+            PENDIENTE: 'var(--warning)',
+            VALIDADO: 'var(--info)',
+            EN_PREPARACION: 'var(--primary)',
+            LISTO: 'var(--success)',
+            ENTREGADO: '#9B59B6',
+            CANCELADO: 'var(--danger)'
+        };
+
+        resultado.innerHTML = `
+            <div class="resultado-card">
+                <span class="pedido-id">#${pedido.idPedido}</span>
+                <span class="pedido-cliente">👤 ${pedido.nombreCliente || 'Sin nombre'}</span>
+                <span style="color:${colores[pedido.estado] || 'var(--text)'}; font-weight:700;">
+                    ● ${pedido.estado.replace('_', ' ')}
+                </span>
+                <span style="color:var(--success); font-weight:700;">
+                    $${formatearPrecio(pedido.precioTotal)}
+                </span>
+            </div>
+        `;
+
+    } catch (error) {
+        resultado.innerHTML = '<p style="color:var(--danger);">Error al buscar el pedido.</p>';
+    }
+}
+
+function limpiarBusqueda() {
+    document.getElementById('input-buscar-pedido').value = '';
+    document.getElementById('resultado-busqueda').innerHTML = '';
 }
