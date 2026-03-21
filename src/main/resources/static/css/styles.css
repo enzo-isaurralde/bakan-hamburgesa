@@ -245,8 +245,7 @@ body {
 }
 
 .producto-card.agotado {
-    opacity: 0.6;
-    pointer-events: none;
+    opacity: 0.85;
 }
 
 .producto-card.agotado .producto-imagen::after {
@@ -363,13 +362,18 @@ body {
 }
 
 .btn-stock.agotado {
-    background: var(--gris);
+    background: #1a1a1a;
+    color: #ef4444;
+    border: 1px solid #ef4444;
     cursor: not-allowed;
 }
 
 .btn-stock.agotado::before {
     content: '✕';
+    color: #ef4444;
 }
+
+
 
 /* SECCIÓN UBICACIÓN */
 .ubicacion-section {

@@ -78,5 +78,11 @@ public class PedidoController {
         PedidosResponseDTO response = pedidoService.cancelarPedido(id);
         return ResponseEntity.ok(response);
     }
+    // Buscar pedido por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<PedidosResponseDTO> buscarPorId(@PathVariable Long id) {
+        PedidosResponseDTO response = pedidoService.buscarPorId(id);
+        return ResponseEntity.ok(response);
+    }
 
 }

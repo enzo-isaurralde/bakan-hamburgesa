@@ -306,4 +306,11 @@ public class PedidoService {
 
         return response;
     }
+    public PedidosResponseDTO buscarPorId(Long id) {
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido #" + id + " no encontrado"));
+        return mapToResponseDTO(pedido , "Pedido encontrado"); // usá el mismo mapper que ya tenés
+    }
+
+
 }

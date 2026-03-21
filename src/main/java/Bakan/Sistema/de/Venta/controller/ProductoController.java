@@ -25,6 +25,12 @@ public class ProductoController {
         return ResponseEntity.ok(productos);
     }
 
+    @GetMapping("/todos")
+    public ResponseEntity<List<Producto>> listarTodos() {
+        List<Producto> productos = productoRepository.findAll();
+        return ResponseEntity.ok(productos);
+    }
+
     // Toggle disponibilidad (para el panel admin)
     @PutMapping("/{id}/toggle")
     public ResponseEntity<Producto> toggleDisponibilidad(@PathVariable Long id) {
