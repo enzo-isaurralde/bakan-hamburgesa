@@ -1,8 +1,7 @@
 const API_URL = 'http://localhost:8080/api';
-let pedidos = [];
-let productos = [];
 
-// Agregá esto después de las variables globales
+let pedidos = [];
+
 function authFetch(url, options = {}) {
     const token = localStorage.getItem('token');
     return fetch(url, {
@@ -15,7 +14,6 @@ function authFetch(url, options = {}) {
     });
 }
 
-// verificarAuth PRIMERO, DOMContentLoaded ADENTRO
 (function verificarAuth() {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -23,18 +21,18 @@ function authFetch(url, options = {}) {
         return;
     }
     const payload = JSON.parse(atob(token.split('.')[1]));
-    if (payload.rol !== 'ADMIN') {
+    if (payload.rol !== 'COCINA') {
         window.location.href = '/login.html';
-        return;
     }
-
-    // Solo llega acá si está autenticado como ADMIN
-    document.addEventListener('DOMContentLoaded', () => {
-        cargarPedidos();
-        cargarProductos();
-        setInterval(cargarPedidos, 10000);
-    });
 })();
+
+
+
+// Inicializar
+document.addEventListener('DOMContentLoaded', () => {
+    cargarPedidos();
+    setInterval(cargarPedidos, 10000); // Refresh cada 10 segundos
+});
 
 
 
@@ -54,33 +52,17 @@ async function cargarPedidos() {
     }
 }
 
-// Cargar productos
-async function cargarProductos() {
-    try {
-        const response = await authFetch(`${API_URL}/productos/todos`);
-        if (!response.ok) throw new Error('Error al cargar productos');
-
-        productos = await response.json();
-        renderizarProductosAdmin();
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
 // Renderizar pedidos en kanban
 function renderizarPedidos(filtro = 'todos') {
-    // Limpiar columnas
     ['PENDIENTE', 'VALIDADO', 'EN_PREPARACION', 'LISTO', 'ENTREGADO', 'CANCELADO'].forEach(estado => {
         const columna = document.getElementById(`column-${estado}`);
         if (columna) columna.innerHTML = '';
     });
 
-    // Filtrar
     const pedidosFiltrados = filtro === 'todos'
         ? pedidos
         : pedidos.filter(p => p.estado === filtro);
 
-    // Renderizar
     pedidosFiltrados.forEach(pedido => {
         const card = crearPedidoCard(pedido);
         const columna = document.getElementById(`column-${pedido.estado}`);
@@ -120,7 +102,7 @@ function crearPedidoCard(pedido) {
     return div;
 }
 
-// Obtener acciones según estado
+// Obtener acciones según estado — cocina/caja maneja todo sobre pedidos
 function obtenerAcciones(estado, idPedido) {
     const acciones = {
         'PENDIENTE': `
@@ -162,58 +144,6 @@ async function cambiarEstado(idPedido, accion) {
     }
 }
 
-// Toggle disponibilidad producto
-async function toggleDisponibilidad(idProducto, disponibleActual) {
-    try {
-        const response = await authFetch(`${API_URL}/productos/${idProducto}/toggle`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-        if (!response.ok) throw new Error('Error al actualizar');
-
-        const data = await response.json();
-        mostrarNotificacion(`${data.disponible ? '✓ En Stock' : '✕ Sin Stock — producto desactivado'}`,
-                            data.disponible ? 'success' : 'error');
-        cargarProductos();
-
-    } catch (error) {
-        mostrarNotificacion('Error al actualizar producto', 'error');
-    }
-}
-
-// Renderizar productos en admin
-function renderizarProductosAdmin() {
-    const container = document.getElementById('productos-admin-list');
-    if (!container) return;
-
-    container.innerHTML = productos.map(p => `
-        <div class="producto-admin-card">
-            <div class="producto-admin-header">
-                <div>
-                    <div class="producto-admin-nombre">${p.emoji || '🍔'} ${p.nombre}</div>
-                    <div style="color: var(--text-light); font-size: 0.875rem;">${p.categoria}</div>
-                </div>
-                <div class="producto-admin-precio">$${formatearPrecio(p.precio)}</div>
-            </div>
-            <div class="producto-admin-desc">${p.descripcion || 'Sin descripción'}</div>
-            <div class="producto-admin-estado">
-                <span class="estado-badge ${p.disponible ? 'estado-disponible' : 'estado-agotado'}">
-                    ${p.disponible ? '✓ En Stock' : '✕ Sin Stock'}
-                </span>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="font-size: 0.8rem; color: ${p.disponible ? 'var(--text-light)' : '#ef4444'};">
-                        ${p.disponible ? 'Desactivar' : 'Sin stock'}
-                    </span>
-                    <div class="toggle-switch ${p.disponible ? 'active' : ''}"
-                         onclick="toggleDisponibilidad(${p.id}, ${p.disponible})">
-                    </div>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
 // Actualizar estadísticas
 function actualizarEstadisticas() {
     const estados = ['PENDIENTE', 'VALIDADO', 'EN_PREPARACION', 'LISTO', 'ENTREGADO', 'CANCELADO'];
@@ -231,27 +161,7 @@ function filtrarPedidos(filtro) {
     renderizarPedidos(filtro);
 }
 
-// Utilidades
-function formatearPrecio(precio) {
-    return (precio || 0).toLocaleString('es-AR');
-}
-
-function calcularTiempo(fecha) {
-    const diff = Date.now() - new Date(fecha).getTime();
-    const minutos = Math.floor(diff / 60000);
-    if (minutos < 1) return 'Ahora';
-    if (minutos < 60) return `${minutos}m`;
-    const horas = Math.floor(minutos / 60);
-    return `${horas}h ${minutos % 60}m`;
-}
-
-function mostrarNotificacion(mensaje, tipo = 'info') {
-    const notif = document.createElement('div');
-    notif.className = `notificacion ${tipo}`;
-    notif.textContent = mensaje;
-    document.body.appendChild(notif);
-    setTimeout(() => notif.remove(), 3000);
-}
+// Buscador
 async function buscarPedido() {
     const id = document.getElementById('input-buscar-pedido').value.trim();
     const resultado = document.getElementById('resultado-busqueda');
@@ -301,4 +211,32 @@ async function buscarPedido() {
 function limpiarBusqueda() {
     document.getElementById('input-buscar-pedido').value = '';
     document.getElementById('resultado-busqueda').innerHTML = '';
+}
+
+// Cerrar sesión
+function cerrarSesion() {
+    localStorage.removeItem('token');
+    window.location.href = '/login.html';
+}
+
+// Utilidades
+function formatearPrecio(precio) {
+    return (precio || 0).toLocaleString('es-AR');
+}
+
+function calcularTiempo(fecha) {
+    const diff = Date.now() - new Date(fecha).getTime();
+    const minutos = Math.floor(diff / 60000);
+    if (minutos < 1) return 'Ahora';
+    if (minutos < 60) return `${minutos}m`;
+    const horas = Math.floor(minutos / 60);
+    return `${horas}h ${minutos % 60}m`;
+}
+
+function mostrarNotificacion(mensaje, tipo = 'info') {
+    const notif = document.createElement('div');
+    notif.className = `notificacion ${tipo}`;
+    notif.textContent = mensaje;
+    document.body.appendChild(notif);
+    setTimeout(() => notif.remove(), 3000);
 }

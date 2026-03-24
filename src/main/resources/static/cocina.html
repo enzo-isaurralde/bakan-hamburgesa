@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAKAN - Cocina</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="logo">
+        <span class="logo-icon">👨‍🍳</span>
+        <span>BAKAN Cocina</span>
+    </div>
+    <a href="http://localhost:8080/index.html" target="_blank" class="btn btn-primary btn-crear">
+        ➕ Nuevo Pedido
+    </a>
+    <button class="btn btn-secondary" onclick="cerrarSesion()">Cerrar sesión</button>
+</header>
+
+<!-- BUSCADOR -->
+<div class="buscador-pedido">
+    <input type="number" id="input-buscar-pedido" placeholder="Buscar pedido por #ID..." min="1"/>
+    <button class="btn btn-primary" onclick="buscarPedido()">🔍 Buscar</button>
+    <button class="btn btn-secondary" onclick="limpiarBusqueda()">✕ Limpiar</button>
+    <div id="resultado-busqueda"></div>
+</div>
+
+<!-- STATS -->
+<div class="dashboard">
+    <div class="stat-card pendiente">
+        <div class="stat-number" id="count-pendiente">0</div>
+        <div class="stat-label">Pendientes</div>
+        <div class="stat-icon">⏳</div>
+    </div>
+    <div class="stat-card validado">
+        <div class="stat-number" id="count-validado">0</div>
+        <div class="stat-label">Validados</div>
+        <div class="stat-icon">✓</div>
+    </div>
+    <div class="stat-card preparacion">
+        <div class="stat-number" id="count-en_preparacion">0</div>
+        <div class="stat-label">En Preparación</div>
+        <div class="stat-icon">👨‍🍳</div>
+    </div>
+    <div class="stat-card listo">
+        <div class="stat-number" id="count-listo">0</div>
+        <div class="stat-label">Listos</div>
+        <div class="stat-icon">🍽️</div>
+    </div>
+    <div class="stat-card entregado">
+        <div class="stat-number" id="count-entregado">0</div>
+        <div class="stat-label">Entregados Hoy</div>
+        <div class="stat-icon">🛵</div>
+    </div>
+</div>
+
+<!-- FILTROS -->
+<div class="filters">
+    <button class="filter-btn active" onclick="filtrarPedidos('todos')">Todos</button>
+    <button class="filter-btn" onclick="filtrarPedidos('PENDIENTE')">Pendientes</button>
+    <button class="filter-btn" onclick="filtrarPedidos('VALIDADO')">Validados</button>
+    <button class="filter-btn" onclick="filtrarPedidos('EN_PREPARACION')">En Preparación</button>
+    <button class="filter-btn" onclick="filtrarPedidos('LISTO')">Listos</button>
+</div>
+
+<!-- KANBAN -->
+<div class="kanban-board">
+    <div class="kanban-column">
+        <h3>⏳ Pendientes</h3>
+        <div class="pedidos-list" id="column-PENDIENTE"></div>
+    </div>
+    <div class="kanban-column">
+        <h3>✓ Validados</h3>
+        <div class="pedidos-list" id="column-VALIDADO"></div>
+    </div>
+    <div class="kanban-column">
+        <h3>👨‍🍳 En Preparación</h3>
+        <div class="pedidos-list" id="column-EN_PREPARACION"></div>
+    </div>
+    <div class="kanban-column">
+        <h3>🍽️ Listos</h3>
+        <div class="pedidos-list" id="column-LISTO"></div>
+    </div>
+    <div class="kanban-column">
+        <h3>✓ Entregados</h3>
+        <div class="pedidos-list" id="column-ENTREGADO"></div>
+    </div>
+</div>
+
+<script src="js/cocina.js"></script>
+
+</body>
+</html>
