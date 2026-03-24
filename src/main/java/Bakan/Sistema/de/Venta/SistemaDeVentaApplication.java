@@ -10,4 +10,6 @@ public class SistemaDeVentaApplication {
 		SpringApplication.run(SistemaDeVentaApplication.class, args);
 	}
 
+
+
 }
