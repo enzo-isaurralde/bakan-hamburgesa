@@ -1,11 +1,17 @@
--- Agregar campos (sin IF NOT EXISTS, Flyway controla que se ejecute una sola vez)
+-- ===========================================
+-- V4: Actualizar productos con campos nuevos y descripciones
+-- ===========================================
+
+-- 1. Agregar campos nuevos
 ALTER TABLE productos ADD COLUMN descripcion TEXT;
 ALTER TABLE productos ADD COLUMN emoji VARCHAR(10);
 ALTER TABLE productos ADD COLUMN categoria VARCHAR(50) DEFAULT 'HAMBURGUESAS';
 ALTER TABLE productos ADD COLUMN es_popular BOOLEAN DEFAULT FALSE;
 ALTER TABLE productos ADD COLUMN es_nuevo BOOLEAN DEFAULT FALSE;
 
--- Actualizar productos existentes
+-- 2. Actualizar productos existentes con descripciones completas
+
+-- Producto 1: Bakan Clásica (ya tenía descripción)
 UPDATE productos SET
                      descripcion = 'Carne vaca 180g, queso cheddar, lechuga, tomate, cebolla caramelizada y salsa especial de la casa en pan brioche.',
                      emoji = '🍔',
@@ -13,7 +19,32 @@ UPDATE productos SET
                      es_popular = TRUE
 WHERE nombre = 'Bakan Clásica';
 
--- Insertar más productos
+-- Producto 2: Bakan Doble (descripción faltante)
+UPDATE productos SET
+                     descripcion = 'Doble carne vaca 180g cada una, doble queso cheddar, panceta crispy, cebolla caramelizada y salsa BBQ en pan brioche.',
+                     emoji = '🍔',
+                     categoria = 'HAMBURGUESAS',
+                     es_popular = FALSE
+WHERE nombre = 'Bakan Doble';
+
+-- Producto 3: Bakan Premium (descripción faltante)
+UPDATE productos SET
+                     descripcion = 'Triple carne vaca 150g, triple queso cheddar, panceta premium, huevo a la plancha, cebolla crispy y salsa especial de la casa.',
+                     emoji = '🍔',
+                     categoria = 'HAMBURGUESAS',
+                     es_popular = FALSE
+WHERE nombre = 'Bakan Premium';
+
+-- Producto 4: Bakan Vegana (descripción faltante)
+UPDATE productos SET
+                     descripcion = 'Medallón de garbanzos y espinaca, queso vegano, palta, tomate, cebolla morada y alioli de ajo asado en pan brioche vegano.',
+                     emoji = '🌱',
+                     categoria = 'HAMBURGUESAS',
+                     es_popular = FALSE
+WHERE nombre = 'Bakan Vegana';
+
+-- 3. Insertar productos adicionales (si no existen)
+
 INSERT INTO productos (nombre, precio, disponible, descripcion, emoji, categoria, es_popular, es_nuevo)
 SELECT 'Doble Smash', 9200, TRUE, 'Doble carne smash 120g cada una, doble cheddar americano, pickles, cebolla fresca y mostaza en pan de papa.', '🥩', 'HAMBURGUESAS', TRUE, FALSE
 FROM DUAL
