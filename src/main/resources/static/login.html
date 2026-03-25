@@ -268,7 +268,8 @@
         errorMsg.classList.remove('visible');
 
         try {
-            const response = await fetch(`${API_URL}/login`, {
+            // CAMBIO: URL de /login a /auth/login
+            const response = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -279,7 +280,9 @@
                 return;
             }
 
-            const token = await response.text();
+            // CAMBIO: Ahora la respuesta es JSON, no texto plano
+            const data = await response.json();
+            const token = data.token; // Extraer el token del objeto JSON
             localStorage.setItem('token', token);
 
             // Decodificar el token para saber el rol
@@ -295,6 +298,7 @@
             }
 
         } catch (error) {
+            console.error('Error:', error);
             mostrarError('Error de conexión. Intentá de nuevo.');
         } finally {
             btn.disabled = false;

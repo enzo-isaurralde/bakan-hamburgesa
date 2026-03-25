@@ -7,6 +7,6 @@ CREATE TABLE IF NOT EXISTS usuarios (
     activo BOOLEAN DEFAULT TRUE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Usuario admin (password: admin - encriptar en producción)
-INSERT INTO usuarios (username, password) VALUES
-    ('admin', '{noop}admin');
+-- Usuario admin con password: admin123 (BCrypt)
+INSERT IGNORE INTO usuarios (username, password, rol, activo) VALUES
+('admin', '$2a$12$4Lz/w5KcKLEjt5WbS3pOR.an.nvynG/YXdtVYUBSq4KVz8PW4856K', 'ADMIN', TRUE);

@@ -2,8 +2,9 @@ package Bakan.Sistema.de.Venta.repository;
 
 import Bakan.Sistema.de.Venta.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Repository;
 
-public interface UsuarioRepository extends JpaRepository <Usuario, Long> {
-    UserDetails findByUsername(String username);
+@Repository
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+    Usuario findByUsername(String username);
 }
