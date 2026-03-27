@@ -95,11 +95,16 @@ src/
 
 ## 🔜 Próximas mejoras
 
-- [ ] Implementación completa de roles con Spring Security (admin / empleado)
 - [ ] Dockerizar la aplicación
 - [ ] Tests unitarios e integración
+
+## 🚀 Demo y video técnico 
+https://drive.google.com/file/d/1P_M95yKMAtPGoH5G3pRB4f5rf8BtMALg/view
+
+https://drive.google.com/file/d/17LvLyhXgnrUfNELZWm_oa3vil_EBJlQE/view
 
 ## 👤 Autor
 
 **Enzo Ariel Isaurralde**  
 [LinkedIn](https://www.linkedin.com/in/enzo-ariel-isaurralde/) · [GitHub](https://github.com/enzo-isaurralde)
+
