@@ -56,7 +56,7 @@ function renderizarProductos() {
                        : !localAbierto
                            ? '<button class="btn-stock" disabled style="background:#1a1a1a; color:#ef4444; border: 1px solid #ef4444; cursor:not-allowed;">Local cerrado</button>'
                            : `<button class="btn-stock" onclick="agregarAlCarrito(${p.id})">
-                               ${enCarrito > 0 ? `En Carrito (${enCarrito})` : 'En Stock'}
+                               ${enCarrito > 0 ? `En Carrito (${enCarrito})` : 'Añadir al carrito'}
                               </button>`
                    }
                 </div>
@@ -260,7 +260,7 @@ async function enviarWhatsApp() {
 
         mensaje += "💳 *Pago:* Efectivo/Transferencia\n";
 
-        const telefonoLocal = "5491123456789";
+        const telefonoLocal = "5491124627525";
         const url = `https://wa.me/${telefonoLocal}?text=${encodeURIComponent(mensaje)}`;
 
         window.open(url, '_blank');

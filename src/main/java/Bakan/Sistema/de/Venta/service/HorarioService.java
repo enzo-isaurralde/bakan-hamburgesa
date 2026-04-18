@@ -21,7 +21,7 @@ import java.util.Locale;
 @Service
 public class HorarioService {
 
-    private static final LocalTime APERTURA_SEMANA   = LocalTime.of(10, 0);
+    private static final LocalTime APERTURA_SEMANA   = LocalTime.of(12, 0);
     private static final LocalTime CIERRE_SEMANA     = LocalTime.of(22, 0);
 
     private static final LocalTime APERTURA_SABADO   = LocalTime.of(10, 0);
