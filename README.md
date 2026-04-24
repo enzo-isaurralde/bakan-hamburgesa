@@ -1,6 +1,13 @@
 # 🍔 Bakan Hamburgesa
-
 Sistema de gestión para una hamburguesería, desarrollado con **Java + Spring Boot** y frontend integrado con **HTML, CSS y JavaScript**.
+
+<img width="1920" height="1080" alt="Captura de pantalla 2026-03-27 123014" src="https://github.com/user-attachments/assets/f0e7c0aa-e0cf-4cb0-96cb-1feb1515cae1" />
+<img width="1920" height="1080" alt="Captura de pantalla 2026-03-27 123723" src="https://github.com/user-attachments/assets/fb6acd0b-00e0-4be3-9dfb-4f75ae85128d" />
+<img width="1920" height="1080" alt="Captura de pantalla 2026-03-27 123824" src="https://github.com/user-attachments/assets/bf5eb06b-4a31-4719-9f5b-5b5c0acf7308" />
+
+
+
+
 
 ## 📋 Descripción
 
